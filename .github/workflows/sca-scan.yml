@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Record scan start time
-        run: echo "TALERTA=\2026-05-10T21:34:04Z" >> \
+        run: echo "TALERTA=\2026-05-10T22:15:56Z" >> \
 
       - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.30.0
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
           scan-ref: './app'

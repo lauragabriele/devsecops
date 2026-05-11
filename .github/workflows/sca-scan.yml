@@ -1,0 +1,30 @@
+name: SCA Scan - Trivy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  trivy-scan:
+    name: Trivy SCA Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Record scan start time
+        run: echo "TALERTA=\2026-05-10T21:32:10Z" >> \
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './app'
+          format: 'table'
+          exit-code: '0'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Save scan timestamp
+        run: echo "Scan realizado em \" >> scan-log.txt

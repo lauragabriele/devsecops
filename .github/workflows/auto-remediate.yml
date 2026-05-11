@@ -1,0 +1,43 @@
+name: Auto Remediation - SCA
+
+on:
+  workflow_run:
+    workflows: ["SCA Scan - Trivy"]
+    types:
+      - completed
+
+jobs:
+  auto-fix:
+    name: Auto Fix Vulnerabilities
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Update lodash to safe version
+        working-directory: ./app
+        run: npm install lodash@4.17.21 --save
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "fix: auto-remediate CVE-2019-10744 - update lodash to 4.17.21"
+          title: "[AUTO-FIX] CVE-2019-10744 - lodash prototype pollution"
+          body: |
+            ## Remediacao Automatizada
+            - CVE: CVE-2019-10744
+            - Severidade: CRITICAL
+            - Pacote: lodash 4.17.4 -> 4.17.21
+            - Detectado por: Trivy SCA Scan
+          branch: auto-fix/CVE-2019-10744
+          base: main

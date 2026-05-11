@@ -15,14 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Trivy
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-
-      - name: Record scan start time
-        run: echo "TALERTA=\2026-05-10T22:27:51Z" >> \
+        run: curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
       - name: Run Trivy SCA scan
         run: trivy fs ./app --severity CRITICAL,HIGH,MEDIUM --format table
-
-      - name: Save scan timestamp
-        run: echo "Scan realizado em \" >> scan-log.txt

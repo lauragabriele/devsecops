@@ -14,17 +14,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Record scan start time
-        run: echo "TALERTA=\2026-05-10T22:17:15Z" >> \
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@v0.28.0
-        with:
-          scan-type: 'fs'
-          scan-ref: './app'
-          format: 'table'
-          exit-code: '0'
-          severity: 'CRITICAL,HIGH,MEDIUM'
+      - name: Record scan start time
+        run: echo "TALERTA=\2026-05-10T22:27:51Z" >> \
+
+      - name: Run Trivy SCA scan
+        run: trivy fs ./app --severity CRITICAL,HIGH,MEDIUM --format table
 
       - name: Save scan timestamp
         run: echo "Scan realizado em \" >> scan-log.txt

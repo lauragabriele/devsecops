@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: devsecops-app
-        image: lauraagabriele/devsecops-app:9a1a793
+        image: lauraagabriele/devsecops-app:458a3ec
         ports:
         - containerPort: 3000
